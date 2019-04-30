@@ -7,19 +7,12 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.ControladorCrear;
 import Modelo.Carrera;
 
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-
-public class VentanaLeer extends JFrame {
+public class VentanaLeer extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -48,6 +41,8 @@ public class VentanaLeer extends JFrame {
 	 */
 	public VentanaLeer() {
 		setTitle("Leer");
+		setModal(true);
+		setResizable(false);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 498, 350);
 		contentPane = new JPanel();
@@ -102,13 +97,15 @@ public class VentanaLeer extends JFrame {
     	    HashMapInputsDoubles.put("arancel", 0.0);
     	}
     		carreras = crud.leer(HashMapInputsDoubles, HashMapInputsStrings );
+ 
+    		dispose();
 			}
-		});
+			});
 		
 		btnLeer.setBounds(308, 243, 117, 34);
 		contentPane.add(btnLeer);
 	}
 		public ArrayList <Carrera> entregarLista(){
-			return carreras;
+			return this.carreras;
 		}
 }

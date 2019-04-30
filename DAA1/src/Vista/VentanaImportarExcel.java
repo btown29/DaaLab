@@ -52,6 +52,7 @@ public class VentanaImportarExcel extends JFrame {
 		contentPane.add(table_1);
 		getContentPane().add(contentPane);
 		revalidate();
+		JOptionPane.showMessageDialog(null, "Se ha importado el archivo", "Importación",JOptionPane.INFORMATION_MESSAGE);
 		repaint();
 	}
 }

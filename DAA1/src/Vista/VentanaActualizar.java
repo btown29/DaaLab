@@ -38,6 +38,7 @@ public class VentanaActualizar extends JDialog {
 
 		setBounds(100, 100, 450, 300);
 		setModal(true);
+		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -67,6 +68,7 @@ public class VentanaActualizar extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						Crud crud = new Crud();
 						crud.actualizar(carrera,textField.getText()) ;
+						dispose();
 					}
 				});
 				okButton.setActionCommand("Actualizar");
@@ -74,11 +76,7 @@ public class VentanaActualizar extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 				dispose();
 			}
-			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+
 		}
 	}
 }

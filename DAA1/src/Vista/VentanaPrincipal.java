@@ -1,5 +1,6 @@
 package Vista;
 import java.util.*;
+
 import Controlador.*;
 import Modelo.*;
 import Controlador.ControladorBaseDatos.*;
@@ -29,17 +30,25 @@ import Controlador.TablaGeneral;
 
 import java.io.*;
 
+/* Autor: Bryan Townsend
+ * Fecha: 30/04/19
+ * Programa : Permite realizar crud e importar y exportar archivos excel. Utilizando MVC
+ * A mejorar a futuros trabajos: Manejar los controladores con la vista. Diferenciar claramente cuandos los atributos son: 
+ * 								 público, privado o protegido. Por qué metodos publicos o estaticos o finales? Mejorar la legibilidad del código.
+ *                               Implementar de mejor manera GUI ( Estudiar conceptos asociados a cómo hacer una GUI correcta)
+ */
 public class VentanaPrincipal extends JFrame {
 
-	//private static JPanel contentPane;
+	//Estos son los atributos de la vista. En realidad solo carreras lo veo necesario 
 	public JScrollPane scrollPane;
 	public  JTable table;
 	public static ArrayList<Carrera> carreras;
 	
 
 	/**
-	 * Launch the application.
+	 * Aqui comienza el programa
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -54,26 +63,31 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Se crea el constructor
 	 */
 	public VentanaPrincipal() {
 		
 		setTitle("Tarea1");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Para que el marco principal tenga el tamaño del monitor
 		setResizable(false);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int ancho = (int) tk.getScreenSize().getWidth() - 65; // Prueba y error
-		int alto = (int) tk.getScreenSize().getHeight() -47;
+		int alto = (int) tk.getScreenSize().getHeight() -47; // Prueba y error
 		setSize(ancho, alto);
 		
-		//setBounds(100, 100, 672, 459);
+		// Utilizo JMenu. Podría no utilizarlos un buen programa tiene un buen menu???????
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
+		
+		// Conectarse a base de datos
 		JMenu mnConectar = new JMenu("Conectar");
 		menuBar.add(mnConectar);
 		
+		// Me conecto en esta maquina
 		JMenuItem mntmPorDefecto = new JMenuItem("Por Defecto");
 		mntmPorDefecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -82,7 +96,11 @@ public class VentanaPrincipal extends JFrame {
 				
 				if(con != null) {
 					//table = TablaGeneral.actualizarTabla(new ControladorBaseDatos());
+					table = new JTable();
 					table = TablaGeneral.actualizarTabla();
+					getContentPane().removeAll();
+					getContentPane().revalidate();
+					getContentPane().repaint();
 					scrollPane = new JScrollPane(table);
 					getContentPane().add(scrollPane);
 					revalidate();
@@ -98,6 +116,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		mnConectar.add(mntmPorDefecto);
 		
+		// Se puede conectar otra persona de manera remota. -------- SE DEBE IMPLEMENTAR ---------------
 		JMenuItem mntmNuevo = new JMenuItem("Nuevo");
 		/*mntmNuevo.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
@@ -123,12 +142,13 @@ public class VentanaPrincipal extends JFrame {
 		JMenu mnCrud = new JMenu("Crud");
 		menuBar.add(mnCrud);
 		
+		// IMPORTANTE: USAR CLAVES PRIMARIAS. MI BASE DE DATOS NO TIENE CLAVE PRIMARIA
+		// Lo que creo significa lo que inserto
 		JMenuItem mntmCrear = new JMenuItem("Crear");
 		mntmCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaCrear vc = new VentanaCrear(table);
 				vc.setVisible(true);
-					System.out.println("TAREAAAA");
 					table = TablaGeneral.actualizarTabla();
 					//revalidate();
 					scrollPane = new JScrollPane(table);
@@ -149,12 +169,14 @@ public class VentanaPrincipal extends JFrame {
 				VentanaLeer vl = new VentanaLeer();
 				vl.setVisible(true);
 				carreras = vl.entregarLista();
-				DefaultTableModel dtm = TablaGeneral.crearJTable(carreras);
-				table.setModel(dtm);
-				JScrollPane scrollPane = new JScrollPane(table);
+				table = new JTable(TablaGeneral.crearJTable(carreras));
+				scrollPane = new JScrollPane(table);
+				getContentPane().removeAll();
+				getContentPane().revalidate();
+				getContentPane().repaint();
 				getContentPane().add(scrollPane);
 				//revalidate();
-				//repaint();
+				repaint();
 				
 			}
 		});
@@ -221,10 +243,9 @@ public class VentanaPrincipal extends JFrame {
 						getContentPane().revalidate();
 						getContentPane().repaint();
 						getContentPane().add(scrollPane);
-						//revalidate();
-						repaint();
-						//revalidate();
-						//repaint();
+
+						repaint(); // Estudiar esto
+
 									
 					}
 				});
@@ -244,7 +265,9 @@ public class VentanaPrincipal extends JFrame {
 						//String archivo = JOptionPane.showInputDialog(null, "Ingrese el nombre del archivo que desea importar");
 						Excel excel = new Excel();
 						Vector< Vector <Integer> > ej = new Vector <Vector<Integer>>();
-						ej = excel.importar(archivo.getName());
+						ej = excel.importar(archivo.getAbsolutePath());
+						//System.out.print(ej);
+						JOptionPane.showMessageDialog(null, "Se ha importado el archivo", "Importación",JOptionPane.INFORMATION_MESSAGE);
 						VentanaImportarExcel vie = new VentanaImportarExcel(ej);
 						vie.setVisible(true);
 		}

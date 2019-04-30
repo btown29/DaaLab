@@ -58,6 +58,14 @@ public class TablaGeneral {
 		JTable table = new JTable();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		Object fila [] = new Object[8];
+		model.addColumn("nombre"); 
+		model.addColumn("institucion"); 
+		model.addColumn("tipo"); 
+		model.addColumn("sede"); 
+		model.addColumn("jornada"); 
+		model.addColumn("arancel"); 
+		model.addColumn("semestre"); 
+		model.addColumn("costoTitulo"); 
 		for(int i = 0; i < list.size(); i++) {
 			fila[0] = list.get(i).nombre;
 			fila[1] = list.get(i).institucion;
@@ -67,8 +75,15 @@ public class TablaGeneral {
 			fila[5] = list.get(i).arancel;
 			fila[6] = list.get(i).semestre;
 			fila[7] = list.get(i).costoTitulo;
+			
 			model.addRow(fila);
 		}
+		for(int k = 1; k < 8 ; k++) {
+			for(int l = 1; l < 8; l++) {
+				System.out.println(model.getValueAt(k, l));
+			}
+		}
+
 		return model;
 	}
 	public static DefaultTableModel crearJTableDeExcel(Vector<Vector<Integer>> matriz) {

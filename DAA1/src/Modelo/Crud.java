@@ -42,6 +42,38 @@ public class Crud {
 			return false;
 		}
 	}
+public boolean buscar(Carrera carrera) {
+		
+		try {
+			 
+			 con = admin.conectar();
+			 
+			 
+			  String query = " select from  coquimbo where(nombre = '"+ carrera.nombre + "' and"   
+			  							+ "institucion = '"+ carrera.institucion + "' and tipo = '"+ carrera.tipo + "' and sede = '"+ carrera.sede + "' and " 
+			  							+ "jornada = '"+ carrera.jornada + "' and  arancel = "+ carrera.arancel + " and  semestres = "+ carrera.semestre + " and " 
+			  							+ "costo_titulo = "+ carrera.costoTitulo +")"; 
+		      PreparedStatement preparedStmt = con.prepareStatement(query);
+		      /*preparedStmt.setString(1, carrera.nombre);
+		      preparedStmt.setString(2, carrera.institucion);
+		      preparedStmt.setString(3, carrera.tipo);
+		      preparedStmt.setString(4, carrera.sede);
+		      preparedStmt.setString(5, carrera.jornada);
+		      preparedStmt.setDouble(6, carrera.arancel);
+		      preparedStmt.setDouble(7, carrera.semestre);
+		      preparedStmt.setDouble(8, carrera.costoTitulo);
+		      */
+		      preparedStmt.execute();
+		      
+		      con.close();
+		      return true;
+			}
+		
+		catch(Exception ex) {
+			 System.out.println(ex.getMessage());
+			return false;
+		}
+	}
 	
 	public ArrayList<Carrera> leer(HashMap<String, Double> inputDouble, HashMap<String, String> inputStrings) {
 
